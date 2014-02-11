@@ -47,5 +47,21 @@ public class LabelsUserType extends JacksonUserType {
         return mapper.getTypeFactory().constructCollectionType(List.class, returnedClass());
     }
 }
+
+@Entity
+@Table(name="ORDERS")
+public class Order {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+    @Type(type = "org.rayjars.hibernate.LabelsUserType")
+    @Column(name = "labels")
+	private List<Label> labels = new ArrayList<Label>();
+
+	 ...getter/setter
+}
+
 ```
 
