@@ -1,7 +1,7 @@
 hibernate-jackson
 =================
 
-Persist an Object to JSON in an hibernate field
+Persist an Object to JSON in database (using hibernate custom field)
 
 
 Create your own implementation by extends JacksonUserType
