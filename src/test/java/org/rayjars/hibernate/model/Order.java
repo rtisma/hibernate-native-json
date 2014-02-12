@@ -9,7 +9,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="ORDERS")
+@Table(name="orders")
 public class Order {
 
 	@Id
@@ -17,7 +17,7 @@ public class Order {
 	private Long id;
 
 	@Column(name = "SSN")
-	private String SSN;
+	private String ssn;
 
 	@Column(name = "DESCRIPTION")
 	private String description;
@@ -61,12 +61,12 @@ public class Order {
         return this;
 	}
 
-	public String getSSN() {
-		return SSN;
+	public String getSsn() {
+		return ssn;
 	}
 
 	public Order ssn(String sSN) {
-		SSN = sSN;
+		ssn = sSN;
         return this;
 	}
 

@@ -1,0 +1,24 @@
+<dataset>
+    <items id="-1" name="test1" label='{ "value": "french label", "lang":"fr"}'/>
+
+    <items id="-2" name="test2" label='{"value": "label without lang"}'/>
+
+
+    <orders id="-1"
+           SSN="40bdce70-9412-11e3-baa8-0800200c9a66"
+           description=""
+           labels='[{"value": "french label", "lang":"fr"}, {"value": "english label", "lang":"en"}]'/>
+
+    <orders id="-3"
+            SSN="40bdce70-9412-11e3-baa8-0800200c9a69"
+            description=""
+            labels="[{'value': 'label without lang'}]"/>
+
+    <orders id="-2"
+           SSN="40bdce70-9412-11e3-baa8-0800200c9a67"
+           description=""/>
+
+
+
+
+</dataset>

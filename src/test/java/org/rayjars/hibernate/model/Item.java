@@ -10,12 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ITEMS")
+@Table(name="items")
 public class Item {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+    @Column(name = "name")
+    private String name;
+
 
     @Type(type = "org.rayjars.hibernate.LabelUserType")
     @Column(name = "label")
@@ -39,6 +43,15 @@ public class Item {
 
     public Item label(Label label) {
         this.label = label;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Item setName(String name) {
+        this.name = name;
         return this;
     }
 }

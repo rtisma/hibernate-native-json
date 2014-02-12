@@ -8,6 +8,8 @@ Implementing a hibernate Jackson UserType by using the jackson object mappper to
 Check the src/test folder to see a full example.
 
 
+More information  [how to implements a user type](http://blog.xebia.com/2009/11/09/understanding-and-writing-hibernate-user-types/)
+
 ### Exemple with a Simple Object
 
 Create your own implementation by extends JacksonUserType

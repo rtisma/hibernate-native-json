@@ -49,7 +49,7 @@ public abstract class JacksonUserType implements UserType {
     @Override
     public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
         if (value == null) {
-            st.setNull(index, SQL_TYPES[0]);
+            st.setString(index, null);
         } else {
             st.setString(index, convertObjectToJson(value));
         }
@@ -58,12 +58,15 @@ public abstract class JacksonUserType implements UserType {
     @Override
     public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
         if (!rs.wasNull()) {
-           return convertJsonToObject(rs.getString(names[0]), owner);
+            String content = rs.getString(names[0]);
+            if(content!=null){
+                return convertJsonToObject(content);
+            }
         }
         return null;
     }
 
-    Object convertJsonToObject(String content, Object owner){
+    Object convertJsonToObject(String content){
         try {
             ObjectMapper mapper = new ObjectMapper();
             JavaType type = createJavaType(mapper);
@@ -85,7 +88,8 @@ public abstract class JacksonUserType implements UserType {
 
     @Override
     public Object deepCopy(Object value) throws HibernateException {
-        return value;
+        String json = convertObjectToJson(value);
+        return convertJsonToObject(json);
     }
 
     /**
@@ -94,7 +98,7 @@ public abstract class JacksonUserType implements UserType {
     @Override
     public Object replace(Object original, Object target, Object owner)
             throws HibernateException {
-        return original;
+        return deepCopy(original);
     }
 
     /**
@@ -106,7 +110,7 @@ public abstract class JacksonUserType implements UserType {
      */
     @Override
     public Serializable disassemble(Object value) throws HibernateException {
-        return (Serializable) value;
+        return (Serializable) deepCopy(value);
     }
 
     /**
@@ -122,7 +126,7 @@ public abstract class JacksonUserType implements UserType {
     @Override
     public Object assemble(Serializable cached, Object owner)
             throws HibernateException {
-        return cached;
+        return deepCopy(cached);
     }
 
     /**
