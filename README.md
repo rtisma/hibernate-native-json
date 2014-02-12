@@ -1,13 +1,11 @@
 hibernate-jackson
 =================
 
-Persist an Object to JSON into database table filed (declared as a string column)
-(using hibernate custom type)
+Persist an Object to JSON into database table field (declared as a string column).
 
-Using the jackson object mappper to do a fast serialize/deserialize an json string representation
+Implementing a hibernate Jackson UserType by using the jackson object mappper to do a fast serialize/deserialize of a json string representation.
 
-Check the src/test folder to see a full example
-
+Check the src/test folder to see a full example.
 
 
 ### Exemple with a Simple Object
