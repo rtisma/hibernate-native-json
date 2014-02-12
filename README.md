@@ -1,12 +1,32 @@
 hibernate-jackson
 =================
 
-Persist an Object to JSON in database (using hibernate custom field)
+Persist an Object to JSON into database table filed (declared as a string column)
+(using hibernate custom type)
 
+Using the jackson object mappper to do a fast serialize/deserialize an json string representation
+
+Check the src/test folder to see a full example
+
+
+
+### Exemple with a Simple Object
 
 Create your own implementation by extends JacksonUserType
 
 ```
+//Need to be serializable to manage the different case scenario of the user type
+public class Label implements Serializable{
+
+    private String value;
+    private String lang;
+
+    public Label() {
+    }
+
+    ...getter/setter
+}
+
 public class LabelUserType extends JacksonUserType {
      @Override
     public Class returnedClass() {
@@ -30,9 +50,11 @@ public class Item {
 }
 ```
 
-And now you can persist your object...with your hibernate session
+And now you can persist your object...with your hibernate session / jpa repository
 
-Its also supports a collection object, create a custom type implementation
+
+
+### Exemple with an object collection
 
 ```
 public class LabelsUserType extends JacksonUserType {

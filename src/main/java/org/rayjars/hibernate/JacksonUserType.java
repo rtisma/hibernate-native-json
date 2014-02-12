@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * Define a custom type
+ * Define a Jackson Serializer/Deserializer use to persist
+ *
+ * The implementation is a hibernate custom type
  *
  * @author Regis Leray
  */
@@ -86,24 +88,51 @@ public abstract class JacksonUserType implements UserType {
         return value;
     }
 
+    /**
+     * Optionnal
+     */
     @Override
     public Object replace(Object original, Object target, Object owner)
             throws HibernateException {
         return original;
     }
 
+    /**
+     * (optional operation)
+     *
+     * @param value
+     *
+     * @throws HibernateException
+     */
     @Override
     public Serializable disassemble(Object value) throws HibernateException {
         return (Serializable) value;
     }
 
+    /**
+     * (optional operation)
+     *
+     * @param cached
+     * @param owner
+     *
+     * @return the instance cached
+     *
+     * @throws HibernateException
+     */
     @Override
     public Object assemble(Serializable cached, Object owner)
             throws HibernateException {
         return cached;
     }
 
-
+    /**
+     * By default we are expecting to use a simple object / not a collection (Set, List)
+     *
+     * @param mapper : instance jackson object mapper
+     *
+     * @return A jackson JavaType to specify wich object represent the json string representation
+     *
+     */
     public JavaType createJavaType (ObjectMapper mapper){
         return SimpleType.construct(returnedClass());
     }

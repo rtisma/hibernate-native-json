@@ -2,7 +2,7 @@ package org.rayjars.hibernate.model;
 
 import java.io.Serializable;
 
-public class Label implements Serializable {
+public class Label implements Serializable{
 
     private String value;
     private String lang;
