@@ -1,12 +1,11 @@
 hibernate-jackson
 =================
 
-Persist an Object to JSON into database table field (declared as a string column).
+Read/Write an object to JSON / JSON to object into a database table field (declared as a string column).
 
-Implementing a hibernate Jackson UserType by using the jackson object mappper to do a fast serialize/deserialize of a json string representation.
+Implementing a hibernate UserType by using the jackson object mappper to do a fast serialize/deserialize of a json string representation.
 
 Check the src/test folder to see a full example.
-
 
 More information  [how to implements a user type](http://blog.xebia.com/2009/11/09/understanding-and-writing-hibernate-user-types/)
 
@@ -17,7 +16,6 @@ Create your own implementation by extends JacksonUserType
 ```
 //Need to be serializable to manage the different case scenario of the user type
 public class Label implements Serializable{
-
     private String value;
     private String lang;
 
@@ -37,7 +35,6 @@ public class LabelUserType extends JacksonUserType {
 @Entity
 @Table(name="ITEMS")
 public class Item {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -54,11 +51,10 @@ And now you can persist your object...with your hibernate session / jpa reposito
 
 
 
-### Exemple with an object collection
+### Exemple with a collection object
 
 ```
 public class LabelsUserType extends JacksonListUserType {
-
     @Override
     public Class returnedClass() {
         return Label.class;
@@ -79,6 +75,4 @@ public class Order {
 
 	 ...getter/setter
 }
-
 ```
-
