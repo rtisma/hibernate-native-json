@@ -1,5 +1,7 @@
-hibernate-jackson
+hibernate-jackson [![Build Status](https://travis-ci.org/regis-leray/hibernate-jackson.png?branch=master)](https://travis-ci.org/regis-leray/hibernate-jackson)
 =================
+
+
 
 Read/Write an object to JSON / JSON to object into a database table field (declared as a string column).
 
