@@ -53,7 +53,7 @@ public class HibernateCustomTypeTest {
 
     private void cleanlyInsertDataset(IDataSet dataSet) throws Exception {
         IDatabaseTester databaseTester = new JdbcDatabaseTester(
-                "org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:demo;DB_CLOSE_DELAY=-1", "sa", "");
+                "org.h2.Driver", "jdbc:h2:mem:demo;DB_CLOSE_DELAY=-1", "sa", "");
         databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
         databaseTester.setDataSet(dataSet);
         databaseTester.onSetup();
