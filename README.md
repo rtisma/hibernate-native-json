@@ -51,7 +51,7 @@ And now you can persist your object...with your hibernate session / jpa reposito
 
 
 
-### Exemple with a collection object
+### Exemple with a object collection
 
 ```
 public class LabelsUserType extends JacksonListUserType {
