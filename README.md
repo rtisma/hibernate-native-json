@@ -57,16 +57,11 @@ And now you can persist your object...with your hibernate session / jpa reposito
 ### Exemple with an object collection
 
 ```
-public class LabelsUserType extends JacksonUserType {
+public class LabelsUserType extends JacksonListUserType {
 
     @Override
     public Class returnedClass() {
         return Label.class;
-    }
-
-    @Override
-    public JavaType createJavaType(ObjectMapper mapper) {
-        return mapper.getTypeFactory().constructCollectionType(List.class, returnedClass());
     }
 }
 
