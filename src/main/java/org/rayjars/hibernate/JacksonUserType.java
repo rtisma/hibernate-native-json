@@ -58,11 +58,9 @@ public abstract class JacksonUserType implements UserType {
 
     @Override
     public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
-        if (!rs.wasNull()) {
-            String content = rs.getString(names[0]);
-            if(content!=null){
-                return convertJsonToObject(content);
-            }
+        String content = rs.getString(names[0]);
+        if(content!=null){
+            return convertJsonToObject(content);
         }
         return null;
     }
