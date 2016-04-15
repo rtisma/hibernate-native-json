@@ -17,10 +17,14 @@
 version: '{build}'
 
 environment:
+  PGUSER: postgres
+  PGPASSWORD: nativejson
   matrix:
+    - JAVA_HOME: C:\Program Files\Java\jdk1.7.0
     - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
 
 os: Windows Server 2012
+
 services:
   - postgresql94
 
@@ -31,5 +35,6 @@ install:
   - cmd: mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q
 
 build_script:
+  - createdb nativejson
   - mvn install -Pci -B
 

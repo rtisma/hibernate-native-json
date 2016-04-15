@@ -284,7 +284,7 @@
         <configuration>
           <failOnWarning>true</failOnWarning>
           <ignoredUnusedDeclaredDependencies>
-            <ignore>com.h2database:h2</ignore>
+            <ignore>org.postgresql:postgresql</ignore>
             <ignore>org.slf4j:slf4j-log4j12</ignore>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
