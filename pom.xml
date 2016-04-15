@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2016 Marvin H Froeder (marvin@marvinformatics.com)
+    Copyright (C) ${year} Marvin Herman Froeder (marvin@marvinformatics.com)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -40,6 +40,12 @@
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.2.1</version>
     </dependency>
@@ -52,9 +58,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>3.12.0.GA</version>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.1.Final</version>
       <scope>provided</scope>
     </dependency>
 
@@ -293,6 +299,10 @@
         <version>2.10</version>
         <configuration>
           <failOnWarning>true</failOnWarning>
+          <ignoredUnusedDeclaredDependencies>
+            <ignore>com.h2database:h2</ignore>
+            <ignore>org.slf4j:slf4j-log4j12</ignore>
+          </ignoredUnusedDeclaredDependencies>
         </configuration>
         <executions>
           <execution>

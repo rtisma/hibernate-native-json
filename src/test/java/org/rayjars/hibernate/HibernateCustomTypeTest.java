@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) ${year} Marvin Herman Froeder (marvin@marvinformatics.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.rayjars.hibernate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +40,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-
 public class HibernateCustomTypeTest {
 
     private SessionFactory sessionFactory;
@@ -37,12 +51,12 @@ public class HibernateCustomTypeTest {
         cleanlyInsertDataset(readDataSet());
     }
 
-   /* @After
+    /* @After
     public void closeSession() {
         try {
             sessionFactory.close();
         } catch (HibernateException e) {
-
+    
         }
     }*/
 
@@ -58,7 +72,6 @@ public class HibernateCustomTypeTest {
         databaseTester.setDataSet(dataSet);
         databaseTester.onSetup();
     }
-
 
     @Test
     public void shouldCreateLabel() {
@@ -77,12 +90,8 @@ public class HibernateCustomTypeTest {
         assertThat(item, hasProperty("label",
                 allOf(
                         hasProperty("value", is("french label")),
-                        hasProperty("lang", is("fr"))
-                )
-        )
-        );
+                        hasProperty("lang", is("fr")))));
     }
-
 
     @Test
     public void shouldUpdateLabel() {
@@ -96,13 +105,9 @@ public class HibernateCustomTypeTest {
         assertThat(loaded, hasProperty("label",
                 allOf(
                         hasProperty("value", is("new text")),
-                        hasProperty("lang", is("en"))
-                )
-        )
-        );
+                        hasProperty("lang", is("en")))));
 
     }
-
 
     @Test
     public void shouldDeleteLabel() {
@@ -135,16 +140,10 @@ public class HibernateCustomTypeTest {
         assertThat(loadedOrder.getLabels(), containsInAnyOrder(
                 allOf(
                         hasProperty("value", is("french value")),
-                        hasProperty("lang", is("fr"))
-                ),
+                        hasProperty("lang", is("fr"))),
                 allOf(
                         hasProperty("value", is("english value")),
-                        hasProperty("lang", is("en"))
-                )
-        )
-        );
-
-
+                        hasProperty("lang", is("en")))));
 
     }
 
@@ -160,17 +159,12 @@ public class HibernateCustomTypeTest {
         assertThat(refreshOrder.getLabels(), containsInAnyOrder(
                 allOf(
                         hasProperty("value", is("new value")),
-                        hasProperty("lang", is("zh"))
-                ),
+                        hasProperty("lang", is("zh"))),
                 allOf(
                         hasProperty("value", is("english label")),
-                        hasProperty("lang", is("en"))
-                )
-        )
-        );
+                        hasProperty("lang", is("en")))));
 
     }
-
 
     @Test
     public void shouldDeleteLabels() {
@@ -184,7 +178,6 @@ public class HibernateCustomTypeTest {
         assertThat(refreshOrder.getLabels(), empty());
     }
 
-
     private Object load(Class clazz, Long id) {
         session = sessionFactory.getCurrentSession();
         session.beginTransaction();
@@ -196,7 +189,6 @@ public class HibernateCustomTypeTest {
         return entity;
 
     }
-
 
     private Object save(Object entity) {
         session = sessionFactory.getCurrentSession();

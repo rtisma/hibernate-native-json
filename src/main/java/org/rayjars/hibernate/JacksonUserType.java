@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) ${year} Marvin Herman Froeder (marvin@marvinformatics.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.rayjars.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -59,13 +74,13 @@ public abstract class JacksonUserType implements UserType {
     @Override
     public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
         String content = rs.getString(names[0]);
-        if(content!=null){
+        if (content != null) {
             return convertJsonToObject(content);
         }
         return null;
     }
 
-    Object convertJsonToObject(String content){
+    Object convertJsonToObject(String content) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JavaType type = createJavaType(mapper);
@@ -75,7 +90,7 @@ public abstract class JacksonUserType implements UserType {
         }
     }
 
-    String convertObjectToJson(Object object){
+    String convertObjectToJson(Object object) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -136,16 +151,13 @@ public abstract class JacksonUserType implements UserType {
      * @return A jackson JavaType to specify wich object represent the json string representation
      *
      */
-    public JavaType createJavaType (ObjectMapper mapper){
+    public JavaType createJavaType(ObjectMapper mapper) {
         return SimpleType.construct(returnedClass());
     }
-
 
     @Override
     public int[] sqlTypes() {
         return SQL_TYPES;
     }
-
-
 
 }
