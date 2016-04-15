@@ -2,13 +2,20 @@ language: java
 
 os:
   - linux
+
 jdk:
   - openjdk7
   - oraclejdk7
   - oraclejdk8
 
+services:
+  - postgresql
+
 install:
   - mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q
+
+before_script:
+  - psql -c 'create database nativejson;' -U postgres
 
 script:
   - mvn install -Pci -B
