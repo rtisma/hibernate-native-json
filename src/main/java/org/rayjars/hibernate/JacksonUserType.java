@@ -15,20 +15,22 @@
  */
 package org.rayjars.hibernate;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.SimpleType;
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.usertype.UserType;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.usertype.UserType;
+import org.postgresql.util.PGobject;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.SimpleType;
 
 /**
  * Define a Jackson Serializer/Deserializer use to persist
@@ -39,7 +41,7 @@ import java.sql.Types;
  */
 public abstract class JacksonUserType implements UserType {
 
-    private static final int[] SQL_TYPES = { Types.LONGVARCHAR };
+    private static final int[] SQL_TYPES = { Types.JAVA_OBJECT };
 
     @Override
     public boolean equals(Object x, Object y) throws HibernateException {
@@ -64,19 +66,21 @@ public abstract class JacksonUserType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
-        if (value == null) {
-            st.setString(index, null);
-        } else {
-            st.setString(index, convertObjectToJson(value));
-        }
+        PGobject dataObject = new PGobject();
+        dataObject.setType("json");
+
+        if (value != null)
+            dataObject.setValue(convertObjectToJson(value));
+
+        st.setObject(index, dataObject);
     }
 
     @Override
     public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
-        String content = rs.getString(names[0]);
-        if (content != null) {
-            return convertJsonToObject(content);
-        }
+        Object result = rs.getObject(names[0]);
+        if (result instanceof PGobject)
+            return convertJsonToObject(((PGobject) result).getValue());
+
         return null;
     }
 

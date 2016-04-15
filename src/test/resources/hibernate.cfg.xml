@@ -8,7 +8,7 @@
 		<property name="connection.url">jdbc:postgresql:nativejson</property>
 		<property name="connection.username">postgres</property>
 		<property name="connection.password">nativejson</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.dialect">org.rayjars.hibernate.PostgreSQLJsonDialect</property>
 
 
 		<!-- JDBC connection pool (use the built-in) -->
@@ -33,5 +33,3 @@
 
 	</session-factory>
 </hibernate-configuration>
-        
-        
