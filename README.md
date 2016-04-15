@@ -2,12 +2,12 @@ hibernate-jackson
 =================
 
 
-[![Build Status](https://travis-ci.org/${owner}/${name}.svg?branch=master)](https://travis-ci.org/${owner}/${name}?branch=master) 
-[![Coverage Status](https://coveralls.io/repos/github/${owner}/${name}/badge.svg?branch=master)](https://coveralls.io/github/${owner}/${name}?branch=master) 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics/${name}/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics/${name}/) 
-[![Issues](https://img.shields.io/github/issues/${owner}/${name}.svg)](https://github.com/${owner}/${name}/issues) 
-[![Forks](https://img.shields.io/github/forks/${owner}/${name}.svg)](https://github.com/${owner}/${name}/network) 
-[![Stars](https://img.shields.io/github/stars/${owner}/${name}.svg)](https://github.com/${owner}/${name}/stargazers)
+[![Build Status](https://travis-ci.org/velo/hibernate-native-json.svg?branch=master)](https://travis-ci.org/velo/hibernate-native-json?branch=master) 
+[![Coverage Status](https://coveralls.io/repos/github/velo/hibernate-native-json/badge.svg?branch=master)](https://coveralls.io/github/velo/hibernate-native-json?branch=master) 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics/hibernate-native-json/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics/hibernate-native-json/) 
+[![Issues](https://img.shields.io/github/issues/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/issues) 
+[![Forks](https://img.shields.io/github/forks/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/network) 
+[![Stars](https://img.shields.io/github/stars/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/stargazers)
 
 
 Read/Write an object to JSON / JSON to object into a database table field (declared as a string column).
