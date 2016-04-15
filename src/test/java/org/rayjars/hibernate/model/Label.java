@@ -25,6 +25,10 @@ public class Label implements Serializable {
     public Label() {
     }
 
+    public Label(String value) {
+        this.value = value;
+    }
+
     public Label(String value, String lang) {
         this.value = value;
         this.lang = lang;

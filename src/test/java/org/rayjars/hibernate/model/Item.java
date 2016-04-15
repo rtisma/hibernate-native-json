@@ -40,7 +40,12 @@ public class Item {
     private Label label;
 
     public Item() {
+    }
 
+    public Item(String name, Label label) {
+        this();
+        this.name = name;
+        this.label = label;
     }
 
     public Long getId() {

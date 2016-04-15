@@ -15,12 +15,22 @@
  */
 package org.rayjars.hibernate.model;
 
-import org.hibernate.annotations.Type;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "orders")
@@ -45,7 +55,13 @@ public class Order {
     private List<Item> items = new ArrayList<Item>();
 
     public Order() {
+    }
 
+    public Order(String ssn, String description, Label... labels) {
+        super();
+        this.ssn = ssn;
+        this.description = description;
+        this.labels = new ArrayList<>(asList(labels));
     }
 
     public Order addLabel(Label label) {

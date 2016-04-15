@@ -15,14 +15,23 @@
  */
 package org.rayjars.hibernate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.operation.DatabaseOperation;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.UUID;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 import org.rayjars.hibernate.model.Item;
@@ -30,25 +39,32 @@ import org.rayjars.hibernate.model.Label;
 import org.rayjars.hibernate.model.Order;
 import org.rayjars.hibernate.util.HibernateUtility;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class HibernateCustomTypeTest {
 
     private SessionFactory sessionFactory;
     private Session session;
+    private Serializable item1;
+    private Serializable item2;
+    private Serializable order1;
+    private Serializable order2;
+    private Serializable order3;
 
     @Before
     public void createSession() throws Exception {
         sessionFactory = HibernateUtility.getSessionFactory();
-        cleanlyInsertDataset(readDataSet());
+
+        Session s = sessionFactory.openSession();
+        Transaction t = s.beginTransaction();
+        item1 = s.save(new Item("test1", new Label("french label", "fr")));
+        item2 = s.save(new Item("test2", new Label("label without lang")));
+
+        order1 = s.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a66", "", new Label("french label", "fr"), new Label("english label", "en")));
+        order2 = s.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a69", "", new Label("label without lang")));
+        order3 = s.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a67", ""));
+        t.commit();
+        s.close();
     }
 
     /* @After
@@ -59,19 +75,6 @@ public class HibernateCustomTypeTest {
     
         }
     }*/
-
-    private IDataSet readDataSet() throws Exception {
-        InputStream stream = this.getClass().getResourceAsStream("/dbunit-dataset.xml");
-        return new FlatXmlDataSetBuilder().build(stream);
-    }
-
-    private void cleanlyInsertDataset(IDataSet dataSet) throws Exception {
-        IDatabaseTester databaseTester = new JdbcDatabaseTester(
-                "org.h2.Driver", "jdbc:h2:mem:demo;DB_CLOSE_DELAY=-1", "sa", "");
-        databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
-        databaseTester.setDataSet(dataSet);
-        databaseTester.onSetup();
-    }
 
     @Test
     public void shouldCreateLabel() {
@@ -85,7 +88,7 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void shouldLoadLabel() {
-        Item item = (Item) load(Item.class, -1l);
+        Item item = (Item) load(Item.class, item1);
 
         assertThat(item, hasProperty("label",
                 allOf(
@@ -95,12 +98,12 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void shouldUpdateLabel() {
-        Item loaded = (Item) load(Item.class, -2l);
+        Item loaded = (Item) load(Item.class, item2);
         loaded.getLabel().setLang("en").setValue("new text");
 
         save(loaded);
 
-        loaded = (Item) load(Item.class, -2l);
+        loaded = (Item) load(Item.class, item2);
 
         assertThat(loaded, hasProperty("label",
                 allOf(
@@ -111,12 +114,12 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void shouldDeleteLabel() {
-        Item item = (Item) load(Item.class, -2l);
+        Item item = (Item) load(Item.class, item2);
         item.label(null);
 
         update(item);
 
-        Item loadedItem = (Item) load(Item.class, -2l);
+        Item loadedItem = (Item) load(Item.class, item2);
 
         assertThat(loadedItem.getLabel(), nullValue());
 
@@ -149,12 +152,12 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void shouldUpdateLabels() {
-        Order loadedOrder = (Order) load(Order.class, -1l);
+        Order loadedOrder = (Order) load(Order.class, order1);
         loadedOrder.getLabels().get(0).setValue("new value").setLang("zh");
 
         update(loadedOrder);
 
-        Order refreshOrder = (Order) load(Order.class, -1l);
+        Order refreshOrder = (Order) load(Order.class, order1);
 
         assertThat(refreshOrder.getLabels(), containsInAnyOrder(
                 allOf(
@@ -168,17 +171,17 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void shouldDeleteLabels() {
-        Order loadedOrder = (Order) load(Order.class, -1l);
+        Order loadedOrder = (Order) load(Order.class, order1);
         loadedOrder.labels(new ArrayList<Label>());
 
         update(loadedOrder);
 
-        Order refreshOrder = (Order) load(Order.class, -1l);
+        Order refreshOrder = (Order) load(Order.class, order1);
 
         assertThat(refreshOrder.getLabels(), empty());
     }
 
-    private Object load(Class clazz, Long id) {
+    private Object load(Class clazz, Serializable id) {
         session = sessionFactory.getCurrentSession();
         session.beginTransaction();
 
