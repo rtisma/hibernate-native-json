@@ -67,15 +67,6 @@ public class HibernateCustomTypeTest {
         s.close();
     }
 
-    /* @After
-    public void closeSession() {
-        try {
-            sessionFactory.close();
-        } catch (HibernateException e) {
-    
-        }
-    }*/
-
     @Test
     public void shouldCreateLabel() {
         Item item = new Item().label(new Label("Message French", "fr"));
