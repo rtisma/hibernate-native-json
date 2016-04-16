@@ -23,4 +23,5 @@ public class LabelUserType extends JacksonUserType {
     public Class returnedClass() {
         return Label.class;
     }
+
 }

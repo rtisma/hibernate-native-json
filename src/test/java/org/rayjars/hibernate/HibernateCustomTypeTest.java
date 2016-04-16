@@ -27,11 +27,12 @@ import static org.hamcrest.Matchers.hasSize;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -200,6 +201,21 @@ public class HibernateCustomTypeTest {
 
     private void update(Object entity) {
         session.update(entity);
+    }
+
+    @Test
+    public void queryJson() {
+        session.save(new Item("test3", new Label("brasiu um", "pt_br")));
+        session.save(new Item("test4", new Label("brasiu dois", "pt_br")));
+        session.save(new Item("test5", new Label("brasio tles", "pt_br")));
+
+        Query query = session.createQuery("select json_text(i.label, 'value') from Item i where json_text(i.label, 'lang') = :lang");
+        query.setParameter("lang", "pt_br");
+        @SuppressWarnings("unchecked")
+        List<String> result = query.list();
+
+        assertThat(result, hasSize(3));
+        assertThat(result, containsInAnyOrder("brasiu um", "brasiu dois", "brasio tles"));
     }
 
 }

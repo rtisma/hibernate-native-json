@@ -18,12 +18,17 @@ package org.rayjars.hibernate;
 import java.sql.Types;
 
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.type.StringType;
 
 @SuppressWarnings("deprecation")
 public class PostgreSQLJsonDialect extends PostgreSQLDialect {
 
     public PostgreSQLJsonDialect() {
         super();
-        registerColumnType(Types.JAVA_OBJECT, "json");
+        registerColumnType(Types.JAVA_OBJECT, "jsonb");
+
+        registerFunction("json_text",
+                new SQLFunctionTemplate(StringType.INSTANCE, "?1 ->> ?2"));
     }
 }
