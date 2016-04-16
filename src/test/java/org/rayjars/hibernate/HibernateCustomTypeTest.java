@@ -32,7 +32,10 @@ import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.rayjars.hibernate.model.Item;
 import org.rayjars.hibernate.model.Label;
@@ -43,7 +46,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class HibernateCustomTypeTest {
 
-    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
     private Session session;
     private Serializable item1;
     private Serializable item2;
@@ -51,20 +54,31 @@ public class HibernateCustomTypeTest {
     private Serializable order2;
     private Serializable order3;
 
+    @BeforeClass
+    public static void createFactory() {
+        sessionFactory = HibernateUtility.getSessionFactory();
+    }
+
     @Before
     public void createSession() throws Exception {
-        sessionFactory = HibernateUtility.getSessionFactory();
+        session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        item1 = session.save(new Item("test1", new Label("french label", "fr")));
+        item2 = session.save(new Item("test2", new Label("label without lang")));
 
-        Session s = sessionFactory.openSession();
-        Transaction t = s.beginTransaction();
-        item1 = s.save(new Item("test1", new Label("french label", "fr")));
-        item2 = s.save(new Item("test2", new Label("label without lang")));
+        order1 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a66", "", new Label("french label", "fr"), new Label("english label", "en")));
+        order2 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a69", "", new Label("label without lang")));
+        order3 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a67", ""));
+    }
 
-        order1 = s.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a66", "", new Label("french label", "fr"), new Label("english label", "en")));
-        order2 = s.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a69", "", new Label("label without lang")));
-        order3 = s.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a67", ""));
-        t.commit();
-        s.close();
+    @After
+    public void commit() {
+        session.getTransaction().commit();
+    }
+
+    @AfterClass
+    public static void shutdown() {
+        sessionFactory.close();
     }
 
     @Test
@@ -173,33 +187,19 @@ public class HibernateCustomTypeTest {
     }
 
     private Object load(Class clazz, Serializable id) {
-        session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-
         Object entity = session.get(clazz, id);
 
-        session.getTransaction().commit();
-
         return entity;
-
     }
 
     private Object save(Object entity) {
-        session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
         Object entityAttached = session.merge(entity);
-
-        session.getTransaction().commit();
 
         return entityAttached;
     }
 
     private void update(Object entity) {
-        session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
         session.update(entity);
-
-        session.getTransaction().commit();
     }
 
 }
