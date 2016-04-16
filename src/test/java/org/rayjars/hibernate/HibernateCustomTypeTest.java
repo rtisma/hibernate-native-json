@@ -48,7 +48,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class HibernateCustomTypeTest {
 
     private static SessionFactory sessionFactory;
-    private Session session;
     private Serializable item1;
     private Serializable item2;
     private Serializable order1;
@@ -62,7 +61,7 @@ public class HibernateCustomTypeTest {
 
     @Before
     public void createSession() throws Exception {
-        session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         item1 = session.save(new Item("test1", new Label("french label", "fr")));
         item2 = session.save(new Item("test2", new Label("label without lang")));
@@ -70,10 +69,6 @@ public class HibernateCustomTypeTest {
         order1 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a66", "", new Label("french label", "fr"), new Label("english label", "en")));
         order2 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a69", "", new Label("label without lang")));
         order3 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a67", ""));
-    }
-
-    @After
-    public void commit() {
         session.getTransaction().commit();
     }
 
@@ -187,32 +182,42 @@ public class HibernateCustomTypeTest {
         assertThat(refreshOrder.getLabels(), empty());
     }
 
-    private Object load(Class clazz, Serializable id) {
-        Object entity = session.get(clazz, id);
+    private <E> E load(Class<E> clazz, Serializable id) {
+        Session session = sessionFactory.openSession();
+        E entity = (E) session.get(clazz, id);
+        session.close();
 
         return entity;
     }
 
     private Object save(Object entity) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
         Object entityAttached = session.merge(entity);
+        session.getTransaction().commit();
 
         return entityAttached;
     }
 
     private void update(Object entity) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
         session.update(entity);
+        session.getTransaction().commit();
     }
 
     @Test
     public void queryJson() {
-        session.save(new Item("test3", new Label("brasiu um", "pt_br")));
-        session.save(new Item("test4", new Label("brasiu dois", "pt_br")));
-        session.save(new Item("test5", new Label("brasio tles", "pt_br")));
+        save(new Item("test3", new Label("brasiu um", "pt_br")));
+        save(new Item("test4", new Label("brasiu dois", "pt_br")));
+        save(new Item("test5", new Label("brasio tles", "pt_br")));
 
+        Session session = sessionFactory.openSession();
         Query query = session.createQuery("select json_text(i.label, 'value') from Item i where json_text(i.label, 'lang') = :lang");
         query.setParameter("lang", "pt_br");
         @SuppressWarnings("unchecked")
         List<String> result = query.list();
+        session.close();
 
         assertThat(result, hasSize(3));
         assertThat(result, containsInAnyOrder("brasiu um", "brasiu dois", "brasio tles"));
