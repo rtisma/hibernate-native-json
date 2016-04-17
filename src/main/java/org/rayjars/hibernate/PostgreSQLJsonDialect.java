@@ -17,12 +17,14 @@ package org.rayjars.hibernate;
 
 import java.sql.Types;
 
-import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.PostgreSQL9Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.type.StringType;
 
-@SuppressWarnings("deprecation")
-public class PostgreSQLJsonDialect extends PostgreSQLDialect {
+/**
+ * @author Marvin H Froeder
+ */
+public class PostgreSQLJsonDialect extends PostgreSQL9Dialect {
 
     public PostgreSQLJsonDialect() {
         super();

@@ -29,6 +29,9 @@ import org.hibernate.usertype.UserCollectionType;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author Marvin H Froeder
+ */
 public class JsonListUserType extends JsonUserType implements UserCollectionType {
 
     @Override
