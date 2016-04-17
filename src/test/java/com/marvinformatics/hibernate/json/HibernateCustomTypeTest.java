@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rayjars.hibernate;
+package com.marvinformatics.hibernate.json;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,12 +42,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.rayjars.hibernate.model.Item;
-import org.rayjars.hibernate.model.Label;
-import org.rayjars.hibernate.model.Order;
-import org.rayjars.hibernate.util.HibernateUtility;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.marvinformatics.hibernate.json.model.Item;
+import com.marvinformatics.hibernate.json.model.Label;
+import com.marvinformatics.hibernate.json.model.Order;
+import com.marvinformatics.hibernate.json.util.HibernateUtility;
 
 public class HibernateCustomTypeTest {
 

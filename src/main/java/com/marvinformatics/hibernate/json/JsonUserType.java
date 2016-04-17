@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rayjars.hibernate;
+package com.marvinformatics.hibernate.json;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -39,6 +39,7 @@ import com.fasterxml.jackson.databind.type.SimpleType;
  *
  * The implementation is a hibernate custom type
  *
+ * @author Marvin H Froeder
  * @author Regis Leray
  */
 public class JsonUserType implements UserType, DynamicParameterizedType {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rayjars.hibernate.model;
+package com.marvinformatics.hibernate.json.model;
 
 public class Label {
 

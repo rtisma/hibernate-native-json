@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rayjars.hibernate.util;
+package com.marvinformatics.hibernate.json;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import java.sql.Types;
 
-public class HibernateUtility {
+import org.hibernate.dialect.PostgreSQL9Dialect;
+import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.type.StringType;
 
-    private static final SessionFactory sessionFactory;
+/**
+ * @author Marvin H Froeder
+ */
+public class PostgreSQLJsonDialect extends PostgreSQL9Dialect {
 
-    static {
-        try {
-            sessionFactory = new Configuration().configure()
-                    .buildSessionFactory();
+    public PostgreSQLJsonDialect() {
+        super();
+        registerColumnType(Types.JAVA_OBJECT, "jsonb");
 
-        } catch (Exception ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+        registerFunction("json_text",
+                new SQLFunctionTemplate(StringType.INSTANCE, "?1 ->> ?2"));
     }
 }

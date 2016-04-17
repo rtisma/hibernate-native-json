@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rayjars.hibernate.model;
+package com.marvinformatics.hibernate.json.model;
 
 import java.util.Map;
 
@@ -37,11 +37,11 @@ public class Item {
     @Column(name = "name")
     private String name;
 
-    @Type(type = "org.rayjars.hibernate.JsonUserType")
+    @Type(type = "com.marvinformatics.hibernate.json.JsonUserType")
     @Column(name = "label")
     private Label label;
 
-    @Type(type = "org.rayjars.hibernate.JsonUserType")
+    @Type(type = "com.marvinformatics.hibernate.json.JsonUserType")
     private Map<String, String> extra;
 
     public Item() {
