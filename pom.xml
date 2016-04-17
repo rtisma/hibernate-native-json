@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) ${year} Marvin Herman Froeder (marvin@marvinformatics.com)
+    Copyright (C) 2016 Marvin Herman Froeder (marvin@marvinformatics.com)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.marvinformatics</groupId>
+  <groupId>com.marvinformatics.hibernate</groupId>
   <artifactId>hibernate-native-json</artifactId>
   <version>0.1-SNAPSHOT</version>
 
@@ -303,9 +303,9 @@
     </plugins>
   </build>
 
-  <url>https://github.com/${owner}/${name}/</url>
+  <url>https://github.com/velo/hibernate-native-json/</url>
 
-  <inceptionYear>${year}</inceptionYear>
+  <inceptionYear>2016</inceptionYear>
 
   <licenses>
     <license>
@@ -325,9 +325,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:${owner}/${name}.git</connection>
-    <developerConnection>scm:git:git@github.com:${owner}/${name}.git</developerConnection>
-    <url>https://github.com/${owner}/${name}/</url>
+    <connection>scm:git:git@github.com:velo/hibernate-native-json.git</connection>
+    <developerConnection>scm:git:git@github.com:velo/hibernate-native-json.git</developerConnection>
+    <url>https://github.com/velo/hibernate-native-json/</url>
   </scm>
 
   <distributionManagement>
