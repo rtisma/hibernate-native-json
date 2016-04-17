@@ -21,10 +21,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Properties;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.usertype.DynamicParameterizedType;
 import org.hibernate.usertype.UserType;
+import org.hibernate.usertype.DynamicParameterizedType.ParameterType;
 import org.postgresql.util.PGobject;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -39,9 +42,10 @@ import com.fasterxml.jackson.databind.type.SimpleType;
  *
  * @author Regis Leray
  */
-public abstract class JacksonUserType implements UserType {
+public class JacksonUserType implements UserType, DynamicParameterizedType {
 
     private static final int[] SQL_TYPES = { Types.JAVA_OBJECT };
+    private Class returnedClass;
 
     @Override
     public boolean equals(Object x, Object y) throws HibernateException {
@@ -162,6 +166,20 @@ public abstract class JacksonUserType implements UserType {
     @Override
     public int[] sqlTypes() {
         return SQL_TYPES;
+    }
+
+    @Override
+    public void setParameterValues(Properties parameters) {
+        final ParameterType reader = (ParameterType) parameters.get(PARAMETER_TYPE);
+
+        if (reader != null) {
+            this.returnedClass = reader.getReturnedClass();
+        }
+    }
+
+    @Override
+    public Class returnedClass() {
+        return this.returnedClass;
     }
 
 }

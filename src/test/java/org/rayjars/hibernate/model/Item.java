@@ -35,7 +35,7 @@ public class Item {
     @Column(name = "name")
     private String name;
 
-    @Type(type = "org.rayjars.hibernate.LabelUserType")
+    @Type(type = "org.rayjars.hibernate.JacksonUserType")
     @Column(name = "label")
     private Label label;
 
