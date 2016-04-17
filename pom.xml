@@ -23,6 +23,8 @@
   <artifactId>hibernate-native-json</artifactId>
   <version>0.1-SNAPSHOT</version>
 
+  <description>Read/Write an object to JSON / JSON to object into a database table field (declared as a json column).</description>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
