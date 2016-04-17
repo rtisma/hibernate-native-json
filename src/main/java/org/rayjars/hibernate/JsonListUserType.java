@@ -29,7 +29,7 @@ import org.hibernate.usertype.UserCollectionType;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JacksonListUserType extends JacksonUserType implements UserCollectionType {
+public class JsonListUserType extends JsonUserType implements UserCollectionType {
 
     @Override
     public JavaType createJavaType(ObjectMapper mapper) {

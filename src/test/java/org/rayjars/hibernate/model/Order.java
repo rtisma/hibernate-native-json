@@ -47,7 +47,7 @@ public class Order {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Type(type = "org.rayjars.hibernate.JacksonListUserType")
+    @Type(type = "org.rayjars.hibernate.JsonListUserType")
     @Column(name = "labels")
     @Target(Label.class)
     private List<Label> labels = new ArrayList<Label>();

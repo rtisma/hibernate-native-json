@@ -37,11 +37,11 @@ public class Item {
     @Column(name = "name")
     private String name;
 
-    @Type(type = "org.rayjars.hibernate.JacksonUserType")
+    @Type(type = "org.rayjars.hibernate.JsonUserType")
     @Column(name = "label")
     private Label label;
 
-    @Type(type = "org.rayjars.hibernate.JacksonUserType")
+    @Type(type = "org.rayjars.hibernate.JsonUserType")
     private Map<String, String> extra;
 
     public Item() {

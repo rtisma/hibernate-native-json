@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.type.SimpleType;
  *
  * @author Regis Leray
  */
-public class JacksonUserType implements UserType, DynamicParameterizedType {
+public class JsonUserType implements UserType, DynamicParameterizedType {
 
     private static final int[] SQL_TYPES = { Types.JAVA_OBJECT };
     private Class<?> returnedClass;

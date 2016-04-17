@@ -25,13 +25,13 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class JacksonListUserTypeTest {
+public class JsonListUserTypeTest {
 
-    private JacksonListUserType type = null;
+    private JsonListUserType type = null;
 
     @Before
     public void createType() {
-        type = new JacksonListUserType() {
+        type = new JsonListUserType() {
             @Override
             public Class<?> returnedClass() {
                 return Label.class;

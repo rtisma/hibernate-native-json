@@ -22,13 +22,13 @@ import org.rayjars.hibernate.model.Label;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class JacksonUserTypeTest {
+public class JsonUserTypeTest {
 
-    private JacksonUserType type = null;
+    private JsonUserType type = null;
 
     @Before
     public void createType() {
-        type = new JacksonUserType() {
+        type = new JsonUserType() {
             @Override
             public Class<?> returnedClass() {
                 return Label.class;
