@@ -15,7 +15,7 @@
  */
 package org.rayjars.hibernate.model;
 
-import org.hibernate.annotations.Type;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +23,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "items")
@@ -39,6 +41,9 @@ public class Item {
     @Column(name = "label")
     private Label label;
 
+    @Type(type = "org.rayjars.hibernate.JacksonUserType")
+    private Map<String, String> extra;
+
     public Item() {
     }
 
@@ -46,6 +51,12 @@ public class Item {
         this();
         this.name = name;
         this.label = label;
+    }
+
+    public Item(String name, Map<String, String> extra) {
+        super();
+        this.name = name;
+        this.extra = extra;
     }
 
     public Long getId() {
@@ -73,4 +84,14 @@ public class Item {
         this.name = name;
         return this;
     }
+
+    public Map<String, String> getExtra() {
+        return extra;
+    }
+
+    public Item setExtra(Map<String, String> extra) {
+        this.extra = extra;
+        return this;
+    }
+
 }

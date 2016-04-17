@@ -92,6 +92,9 @@ public class JacksonUserType implements UserType, DynamicParameterizedType {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JavaType type = createJavaType(mapper);
+            if (type == null)
+                return mapper.readValue(content, returnedClass);
+
             return mapper.readValue(content, type);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -160,7 +163,11 @@ public class JacksonUserType implements UserType, DynamicParameterizedType {
      *
      */
     public JavaType createJavaType(ObjectMapper mapper) {
-        return SimpleType.construct(returnedClass());
+        try {
+            return SimpleType.construct(returnedClass());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Override

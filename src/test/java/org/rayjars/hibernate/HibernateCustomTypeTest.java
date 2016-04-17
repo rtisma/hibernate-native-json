@@ -22,14 +22,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.hamcrest.Matchers;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -190,13 +194,13 @@ public class HibernateCustomTypeTest {
         return entity;
     }
 
-    private Object save(Object entity) {
+    private <E> E save(E entity) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Object entityAttached = session.merge(entity);
         session.getTransaction().commit();
 
-        return entityAttached;
+        return (E) entityAttached;
     }
 
     private void update(Object entity) {
@@ -221,6 +225,29 @@ public class HibernateCustomTypeTest {
 
         assertThat(result, hasSize(3));
         assertThat(result, containsInAnyOrder("brasiu um", "brasiu dois", "brasio tles"));
+    }
+
+    @Test
+    public void map() {
+        Map<String, String> extra = new HashMap<String, String>();
+        extra.put("key", "value");
+        extra.put("foo", "bar");
+
+        Long item3 = save(new Item("test3", extra)).getId();
+
+        Item item = load(Item.class, item3);
+        assertThat(item.getExtra(), hasEntry("foo", "bar"));
+        assertThat(item.getExtra(), hasEntry("key", "value"));
+
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("select json_text(i.extra, 'foo') from Item i where json_text(i.extra, 'key') = :value");
+        query.setParameter("value", "value");
+        @SuppressWarnings("unchecked")
+        List<String> result = query.list();
+        session.close();
+
+        assertThat(result, hasSize(1));
+        assertThat(result, containsInAnyOrder("bar"));
     }
 
 }
