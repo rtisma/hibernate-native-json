@@ -30,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Target;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -46,8 +47,9 @@ public class Order {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Type(type = "org.rayjars.hibernate.LabelsUserType")
+    @Type(type = "org.rayjars.hibernate.JacksonListUserType")
     @Column(name = "labels")
+    @Target(Label.class)
     private List<Label> labels = new ArrayList<Label>();
 
     @OneToMany(cascade = CascadeType.ALL)

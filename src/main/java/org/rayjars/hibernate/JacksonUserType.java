@@ -27,7 +27,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.DynamicParameterizedType;
 import org.hibernate.usertype.UserType;
-import org.hibernate.usertype.DynamicParameterizedType.ParameterType;
 import org.postgresql.util.PGobject;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -45,7 +44,7 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 public class JacksonUserType implements UserType, DynamicParameterizedType {
 
     private static final int[] SQL_TYPES = { Types.JAVA_OBJECT };
-    private Class returnedClass;
+    private Class<?> returnedClass;
 
     @Override
     public boolean equals(Object x, Object y) throws HibernateException {
@@ -179,13 +178,13 @@ public class JacksonUserType implements UserType, DynamicParameterizedType {
     public void setParameterValues(Properties parameters) {
         final ParameterType reader = (ParameterType) parameters.get(PARAMETER_TYPE);
 
-        if (reader != null) {
+        if (reader != null)
             this.returnedClass = reader.getReturnedClass();
-        }
+
     }
 
     @Override
-    public Class returnedClass() {
+    public Class<?> returnedClass() {
         return this.returnedClass;
     }
 

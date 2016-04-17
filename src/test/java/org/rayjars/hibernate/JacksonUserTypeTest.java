@@ -30,7 +30,7 @@ public class JacksonUserTypeTest {
     public void createType() {
         type = new JacksonUserType() {
             @Override
-            public Class returnedClass() {
+            public Class<?> returnedClass() {
                 return Label.class;
             }
         };
