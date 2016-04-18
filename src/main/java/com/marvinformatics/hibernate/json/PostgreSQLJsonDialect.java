@@ -17,18 +17,19 @@ package com.marvinformatics.hibernate.json;
 
 import java.sql.Types;
 
-import org.hibernate.dialect.PostgreSQL9Dialect;
+import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.type.StringType;
 
 /**
  * @author Marvin H Froeder
  */
-public class PostgreSQLJsonDialect extends PostgreSQL9Dialect {
+@SuppressWarnings("deprecation")
+public class PostgreSQLJsonDialect extends PostgreSQLDialect {
 
     public PostgreSQLJsonDialect() {
         super();
-        registerColumnType(Types.JAVA_OBJECT, "jsonb");
+        registerColumnType(Types.JAVA_OBJECT, "json");
 
         registerFunction("json_text",
                 new SQLFunctionTemplate(StringType.INSTANCE, "?1 ->> ?2"));
