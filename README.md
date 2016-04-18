@@ -4,7 +4,7 @@ hibernate-jackson
 
 [![Build Status](https://travis-ci.org/velo/hibernate-native-json.svg?branch=master)](https://travis-ci.org/velo/hibernate-native-json?branch=master) 
 [![Coverage Status](https://coveralls.io/repos/github/velo/hibernate-native-json/badge.svg?branch=master)](https://coveralls.io/github/velo/hibernate-native-json?branch=master) 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics/hibernate-native-json/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics/hibernate-native-json/) 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics.hibernate/hibernate-native-json/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.marvinformatics.hibernate/hibernate-native-json/) 
 [![Issues](https://img.shields.io/github/issues/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/issues) 
 [![Forks](https://img.shields.io/github/forks/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/network) 
 [![Stars](https://img.shields.io/github/stars/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/stargazers)
