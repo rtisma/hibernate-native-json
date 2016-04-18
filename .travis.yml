@@ -11,6 +11,9 @@ jdk:
 services:
   - postgresql
 
+addons:
+  postgresql: "9.4"
+
 install:
   - mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q
 
