@@ -9,6 +9,7 @@ hibernate-native-json
 [![Forks](https://img.shields.io/github/forks/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/network) 
 [![Stars](https://img.shields.io/github/stars/velo/hibernate-native-json.svg)](https://github.com/velo/hibernate-native-json/stargazers)
 
+:hp-tags: jpa, hibernate, json
 
 Read/Write an object to JSON / JSON to object into a database table field (declared as a string column).
 This also allow to query json.
@@ -17,6 +18,7 @@ Currently supported databases:
 - postgresql
 
 This project provided a hibernate UserType and a dialect with json support.
+
 The UserType uses jackson object mappper to do a fast serialize/deserialize of a json string representation.  More information  [how to implements a user type](http://blog.xebia.com/2009/11/09/understanding-and-writing-hibernate-user-types/)
 
 Check the src/test folder to see a full example.
@@ -41,16 +43,19 @@ public class MyClass {
 
 Keep in mind, for collections @org.hibernate.annotations.Target is mandatory.
 
-In order to be able to persist, query and generate DDL for this objects you need to set hibernate dialect to ````PostgreSQLJsonDialect````.
-````
-		<property name="hibernate.dialect">com.marvinformatics.hibernate.json.PostgreSQLJsonDialect</property>
-````
+In order to be able to persist, query and generate DDL for this objects you need to set hibernate dialect to `PostgreSQLJsonDialect`.
+
+
+```
+  <property name="hibernate.dialect">com.marvinformatics.hibernate.json.PostgreSQLJsonDialect</property>
+```
+
 
 Now you can persist your object as a json using your hibernate session / jpa repository.
 
 ### Querying 
 
-````json_text````: is equivalent to postgres ```` ->> ```` get JSON object field as text
+`json_text`: is equivalent to postgres `->>` get JSON object field as text
 http://www.postgresql.org/docs/9.5/static/functions-json.html
 
 This allow a HQL query like this:
@@ -76,7 +81,7 @@ Witch will produce the following SQL:
 
 ### DDL generation
 Considering this class:
-````
+```
 @Entity
 @Table(name = "items")
 public class Item {
@@ -94,7 +99,7 @@ public class Item {
 
     @Type(type = "com.marvinformatics.hibernate.json.JsonUserType")
     private Map<String, String> extra;
-````
+```
 
 This in produce the following DDL:
 ```
@@ -106,7 +111,7 @@ This in produce the following DDL:
         ORDER_ID int8,
         primary key (id)
     )
-````
+```
 
 
 More functions and more databases are comming.  Wanna sppeed up the process? Click [here](https://github.com/velo/hibernate-native-json/compare)
