@@ -1,4 +1,4 @@
-hibernate-jackson
+hibernate-native-json
 =================
 
 
@@ -11,77 +11,103 @@ hibernate-jackson
 
 
 Read/Write an object to JSON / JSON to object into a database table field (declared as a string column).
+This also allow to query json.
 
-Implementing a hibernate UserType by using the jackson object mappper to do a fast serialize/deserialize of a json string representation.
+Currently supported databases:
+- postgresql
+
+This project provided a hibernate UserType and a dialect with json support.
+The UserType uses jackson object mappper to do a fast serialize/deserialize of a json string representation.  More information  [how to implements a user type](http://blog.xebia.com/2009/11/09/understanding-and-writing-hibernate-user-types/)
 
 Check the src/test folder to see a full example.
 
-More information  [how to implements a user type](http://blog.xebia.com/2009/11/09/understanding-and-writing-hibernate-user-types/)
+### Example
 
-### Exemple with a Simple Object
-
-Create your own implementation by extends JacksonUserType
+You can serialize either a class or a Map<String, Object> (in any cases a more dynamic field is necessary).
 
 ```
-//Need to be serializable to manage the different case scenario of the user type
-public class Label implements Serializable{
-    private String value;
-    private String lang;
-
-    public Label() {
-    }
-
-    ...getter/setter
-}
-
-public class LabelUserType extends JacksonUserType {
-     @Override
-    public Class returnedClass() {
-        return Label.class;
-    }
-}
-
 @Entity
-@Table(name="ITEMS")
-public class Item {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+public class MyClass {
 
-    @Type(type = "org.rayjars.hibernate.LabelUserType")
+	@Type(type = "com.marvinformatics.hibernate.json.JsonListUserType")
+	@Target(Label.class)
+	private List<Label> labels = new ArrayList<Label>();
+
+	@Type(type = "com.marvinformatics.hibernate.json.JsonUserType")
+	private Map<String, String> extra;
+
+}
+```
+
+Keep in mind, for collections @org.hibernate.annotations.Target is mandatory.
+
+In order to be able to persist, query and generate DDL for this objects you need to set hibernate dialect to ````PostgreSQLJsonDialect````.
+````
+		<property name="hibernate.dialect">com.marvinformatics.hibernate.json.PostgreSQLJsonDialect</property>
+````
+
+Now you can persist your object as a json using your hibernate session / jpa repository.
+
+### Querying 
+
+# json_text: is equivalent to postgres ```` ->> ```` get JSON object field as text
+http://www.postgresql.org/docs/9.5/static/functions-json.html
+
+This allow a HQL query like this:
+```
+	select
+		json_text(i.label, 'value')
+	from
+		Item i
+	where
+		json_text(i.label, 'lang') = :lang
+```
+
+Witch will produce the following SQL:
+```
+    select
+        item0_.label ->> 'value' as col_0_0_ 
+    from
+        items item0_ 
+    where
+        item0_.label ->> 'lang'=?
+```
+
+
+### DDL generation
+Considering this class:
+````
+@Entity
+@Table(name = "items")
+public class Item {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Type(type = "com.marvinformatics.hibernate.json.JsonUserType")
     @Column(name = "label")
     private Label label;
 
-    ...getter/setter
-}
+    @Type(type = "com.marvinformatics.hibernate.json.JsonUserType")
+    private Map<String, String> extra;
+````
+
+This in produce the following DDL:
 ```
+    create table items (
+        id int8 not null,
+        extra jsonb,
+        label jsonb,
+        name varchar(255),
+        ORDER_ID int8,
+        primary key (id)
+    )
+````
 
-And now you can persist your object...with your hibernate session / jpa repository
 
+More functions and more databases are comming.  Wanna sppeed up the process? Click [here](https://github.com/velo/hibernate-native-json/compare)
 
-
-### Exemple with a object collection
-
-```
-public class LabelsUserType extends JacksonListUserType {
-    @Override
-    public Class returnedClass() {
-        return Label.class;
-    }
-}
-
-@Entity
-@Table(name="ORDERS")
-public class Order {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-    @Type(type = "org.rayjars.hibernate.LabelsUserType")
-    @Column(name = "labels")
-	private List<Label> labels = new ArrayList<Label>();
-
-	 ...getter/setter
-}
-```
