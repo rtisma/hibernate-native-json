@@ -50,7 +50,7 @@ Now you can persist your object as a json using your hibernate session / jpa rep
 
 ### Querying 
 
-# json_text: is equivalent to postgres ```` ->> ```` get JSON object field as text
+````json_text````: is equivalent to postgres ```` ->> ```` get JSON object field as text
 http://www.postgresql.org/docs/9.5/static/functions-json.html
 
 This allow a HQL query like this:
