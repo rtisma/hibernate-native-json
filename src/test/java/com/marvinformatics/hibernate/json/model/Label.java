@@ -15,21 +15,28 @@
  */
 package com.marvinformatics.hibernate.json.model;
 
+import com.querydsl.core.annotations.QueryEntity;
+
+@QueryEntity
 public class Label {
 
     private String value;
     private String lang;
+    private Integer order;
 
     public Label() {
+        this.order = 0;
     }
 
     public Label(String value) {
+        this.order = 0;
         this.value = value;
     }
 
-    public Label(String value, String lang) {
+    public Label(String value, String lang, Integer order) {
         this.value = value;
         this.lang = lang;
+        this.order = order;
     }
 
     public String getValue() {
@@ -68,5 +75,13 @@ public class Label {
         int result = value != null ? value.hashCode() : 0;
         result = 31 * result + (lang != null ? lang.hashCode() : 0);
         return result;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

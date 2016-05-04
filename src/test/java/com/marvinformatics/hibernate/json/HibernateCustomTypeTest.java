@@ -33,11 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hamcrest.Matchers;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -55,8 +53,6 @@ public class HibernateCustomTypeTest {
     private Serializable item1;
     private Serializable item2;
     private Serializable order1;
-    private Serializable order2;
-    private Serializable order3;
 
     @BeforeClass
     public static void createFactory() {
@@ -67,12 +63,12 @@ public class HibernateCustomTypeTest {
     public void createSession() throws Exception {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        item1 = session.save(new Item("test1", new Label("french label", "fr")));
+        item1 = session.save(new Item("test1", new Label("french label", "fr", 1)));
         item2 = session.save(new Item("test2", new Label("label without lang")));
 
-        order1 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a66", "", new Label("french label", "fr"), new Label("english label", "en")));
-        order2 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a69", "", new Label("label without lang")));
-        order3 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a67", ""));
+        order1 = session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a66", "", new Label("french label", "fr", 2), new Label("english label", "en", 3)));
+        session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a69", "", new Label("label without lang")));
+        session.save(new Order("40bdce70-9412-11e3-baa8-0800200c9a67", ""));
         session.getTransaction().commit();
     }
 
@@ -83,7 +79,7 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void shouldCreateLabel() {
-        Item item = new Item().label(new Label("Message French", "fr"));
+        Item item = new Item().label(new Label("Message French", "fr", 4));
 
         Item id = (Item) save(item);
 
@@ -130,14 +126,15 @@ public class HibernateCustomTypeTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldCreateLabels() throws JsonProcessingException {
 
         Order order = new Order()
                 .description("customer order")
                 .ssn(UUID.randomUUID().toString())
-                .addLabel(new Label("french value", "fr"))
-                .addLabel(new Label("english value", "en"));
+                .addLabel(new Label("french value", "fr", 5))
+                .addLabel(new Label("english value", "en", 6));
 
         Order saved = (Order) save(order);
 
@@ -155,6 +152,7 @@ public class HibernateCustomTypeTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldUpdateLabels() {
         Order loadedOrder = (Order) load(Order.class, order1);
@@ -188,12 +186,14 @@ public class HibernateCustomTypeTest {
 
     private <E> E load(Class<E> clazz, Serializable id) {
         Session session = sessionFactory.openSession();
+        @SuppressWarnings("unchecked")
         E entity = (E) session.get(clazz, id);
         session.close();
 
         return entity;
     }
 
+    @SuppressWarnings("unchecked")
     private <E> E save(E entity) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -212,9 +212,9 @@ public class HibernateCustomTypeTest {
 
     @Test
     public void queryJson() {
-        save(new Item("test3", new Label("brasiu um", "pt_br")));
-        save(new Item("test4", new Label("brasiu dois", "pt_br")));
-        save(new Item("test5", new Label("brasio tles", "pt_br")));
+        save(new Item("test3", new Label("brasiu um", "pt_br", 7)));
+        save(new Item("test4", new Label("brasiu dois", "pt_br", 8)));
+        save(new Item("test5", new Label("brasio tles", "pt_br", 9)));
 
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("select json_text(i.label, 'value') from Item i where json_text(i.label, 'lang') = :lang");

@@ -20,19 +20,14 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtility {
 
-    private static final SessionFactory sessionFactory;
-
-    static {
+    @SuppressWarnings("deprecation")
+    public static SessionFactory getSessionFactory() {
         try {
-            sessionFactory = new Configuration().configure()
+            return new Configuration().configure()
                     .buildSessionFactory();
 
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(ex);
         }
-    }
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 }

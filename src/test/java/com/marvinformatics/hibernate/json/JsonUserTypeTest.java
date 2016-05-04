@@ -52,15 +52,15 @@ public class JsonUserTypeTest {
 
     @Test
     public void testConvertObjectToJson() throws Exception {
-        Label label = new Label("french label", "fr");
+        Label label = new Label("french label", "fr", 1);
 
         String json = type.convertObjectToJson(label);
-        assertThat(json, is("{\"value\":\"french label\",\"lang\":\"fr\"}"));
+        assertThat(json, is("{\"value\":\"french label\",\"lang\":\"fr\",\"order\":1}"));
     }
 
     @Test
     public void testDeepCopy() throws Exception {
-        Label label = new Label("french label", "fr");
+        Label label = new Label("french label", "fr", 2);
         Label copy = (Label) type.deepCopy(label);
 
         assertThat(copy, equalTo(label));
@@ -68,6 +68,7 @@ public class JsonUserTypeTest {
 
         assertThat(label, allOf(
                 hasProperty("value", is("french label")),
+                hasProperty("order", is(2)),
                 hasProperty("lang", is("fr"))));
 
     }

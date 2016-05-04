@@ -41,6 +41,7 @@ public class JsonListUserTypeTest {
         };
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testConvertJsonToObject() throws Exception {
         String json = "[{\"value\": \"french label\", \"lang\":\"fr\"}, {\"value\": \"english label\", \"lang\":\"en\"}]";
@@ -56,20 +57,21 @@ public class JsonListUserTypeTest {
     @Test
     public void testConvertObjectToJson() throws Exception {
         List<Label> labels = new ArrayList<Label>();
-        labels.add(new Label("french label", "fr"));
-        labels.add(new Label("english label", "en"));
+        labels.add(new Label("french label", "fr", 1));
+        labels.add(new Label("english label", "en", 2));
 
         String json = type.convertObjectToJson(labels);
 
-        assertThat(json, containsString("{\"value\":\"french label\",\"lang\":\"fr\"}"));
-        assertThat(json, containsString("{\"value\":\"english label\",\"lang\":\"en\"}"));
+        assertThat(json, containsString("{\"value\":\"french label\",\"lang\":\"fr\",\"order\":1}"));
+        assertThat(json, containsString("{\"value\":\"english label\",\"lang\":\"en\",\"order\":2}"));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testDeepCopy() throws Exception {
         List<Label> labels = new ArrayList<Label>();
-        labels.add(new Label("french label", "fr"));
-        labels.add(new Label("english label", "en"));
+        labels.add(new Label("french label", "fr", 3));
+        labels.add(new Label("english label", "en", 4));
 
         List<Label> copy = (List<Label>) type.deepCopy(labels);
 

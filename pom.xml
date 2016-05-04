@@ -30,7 +30,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <coveralls.token>E1dXR3I12epejo7BzJtZhlaBG0bcENzeP</coveralls.token>
+
     <java.version>1.7</java.version>
+    <querydsl.version>4.1.0</querydsl.version>
   </properties>
 
   <dependencies>
@@ -64,6 +66,19 @@
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
       <version>1.0.1.Final</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${querydsl.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-jpa</artifactId>
+      <version>${querydsl.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -178,6 +193,7 @@
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>${argLine} -Xmx2G</argLine>
+          <reuseForks>false</reuseForks>
         </configuration>
       </plugin>
 
@@ -297,6 +313,54 @@
             <goals>
               <goal>analyze-only</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <version>2.0.5</version>
+        <configuration>
+          <processors>
+            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+            <processor>com.querydsl.apt.QuerydslAnnotationProcessor</processor>
+          </processors>
+          <includes>
+            <include>**/model/**</include>
+          </includes>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process-test</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/apt-test</source>
+              </sources>
+            </configuration>
           </execution>
         </executions>
       </plugin>

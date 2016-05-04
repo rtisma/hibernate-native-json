@@ -10,7 +10,6 @@
 		<property name="connection.password">nativejson</property>
 		<property name="hibernate.dialect">com.marvinformatics.hibernate.json.PostgreSQLJsonDialect</property>
 
-
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">10</property>
 
@@ -29,7 +28,5 @@
 
 		<mapping class="com.marvinformatics.hibernate.json.model.Order" />
 		<mapping class="com.marvinformatics.hibernate.json.model.Item" />
-
-
 	</session-factory>
 </hibernate-configuration>
