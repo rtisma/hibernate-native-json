@@ -15,14 +15,23 @@
  */
 package com.marvinformatics.hibernate.json;
 
+import java.sql.Types;
+
 /**
- * Deprecated json dialect please see:
+ * An SQL dialect for Postgres 9.4 and 9.5
  * 
- * @see {@link PostgreSQL93Dialect}
- * @see {@link PostgreSQL94Dialect}
+ * Includes support to JSONB type
+ * <a href="http://www.postgresql.org/docs/9.4/static/datatype-json.html">http://www.postgresql.org/docs/9.4/static/datatype-json.html</a>.
+ * 
+ * For json @see {@link PostgreSQL93Dialect}
  *
  * @author Marvin H Froeder
  */
-public class PostgreSQLJsonDialect extends PostgreSQL94Dialect {
+public class PostgreSQL94Dialect extends PostgreSQL93Dialect {
+
+    public PostgreSQL94Dialect() {
+        super();
+        registerColumnType(Types.JAVA_OBJECT, "jsonb");
+    }
 
 }
