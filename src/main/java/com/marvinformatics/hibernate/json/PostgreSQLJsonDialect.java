@@ -23,6 +23,6 @@ package com.marvinformatics.hibernate.json;
  *
  * @author Marvin H Froeder
  */
-public class PostgreSQLJsonDialect extends PostgreSQL94Dialect {
+public class PostgreSQLJsonDialect extends PostgreSQL93Dialect {
 
 }
