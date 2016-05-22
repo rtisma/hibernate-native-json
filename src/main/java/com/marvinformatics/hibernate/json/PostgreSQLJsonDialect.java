@@ -18,8 +18,8 @@ package com.marvinformatics.hibernate.json;
 /**
  * Deprecated json dialect please see:
  * 
- * @see {@link PostgreSQL93Dialect}
- * @see {@link PostgreSQL94Dialect}
+ * {@link PostgreSQL93Dialect}
+ * {@link PostgreSQL94Dialect}
  *
  * @author Marvin H Froeder
  */

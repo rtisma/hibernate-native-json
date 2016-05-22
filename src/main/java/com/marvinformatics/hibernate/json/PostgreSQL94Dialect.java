@@ -23,7 +23,7 @@ import java.sql.Types;
  * Includes support to JSONB type
  * <a href="http://www.postgresql.org/docs/9.4/static/datatype-json.html">http://www.postgresql.org/docs/9.4/static/datatype-json.html</a>.
  * 
- * For json @see {@link PostgreSQL93Dialect}
+ * For json {@link PostgreSQL93Dialect}
  *
  * @author Marvin H Froeder
  */

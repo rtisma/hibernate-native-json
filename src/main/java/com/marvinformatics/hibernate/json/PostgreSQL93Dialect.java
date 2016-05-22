@@ -27,7 +27,7 @@ import org.hibernate.type.StringType;
  * Includes support to JSON type
  * <a href="http://www.postgresql.org/docs/9.3/static/datatype-json.html">http://www.postgresql.org/docs/9.3/static/datatype-json.html</a>.
  * 
- * For jsonb @see {@link PostgreSQL94Dialect}
+ * For jsonb {@link PostgreSQL94Dialect}
  *
  * @author Marvin H Froeder
  */
