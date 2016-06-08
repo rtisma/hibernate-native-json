@@ -21,7 +21,7 @@
 
   <groupId>com.marvinformatics.hibernate</groupId>
   <artifactId>hibernate-native-json</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.3</version>
 
   <name>hibernate-native-json</name>
   <description>Read/Write an object to JSON / JSON to object into a database table field (declared as a json column).</description>
