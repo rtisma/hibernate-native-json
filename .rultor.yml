@@ -26,7 +26,7 @@ merge:
   commanders:
   - velo
   script: |-
-    sudo apt-get install postgresql-9.3
+    sudo apt-get install -y postgresql-9.3
     sudo echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf
     sudo echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf
     sudo service postgresql start
@@ -39,7 +39,7 @@ env:
 
 release:
   script: |-
-    sudo apt-get install postgresql-9.3
+    sudo apt-get install -y postgresql-9.3
     sudo echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf
     sudo echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf
     sudo service postgresql start
