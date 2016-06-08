@@ -26,6 +26,11 @@ merge:
   commanders:
   - velo
   script: |-
+    sudo apt-get install postgresql-9.3
+    sudo echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf
+    sudo echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf
+    sudo service postgresql start
+    psql -c 'create database nativejson;' -U postgres
     mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q --settings ../settings.xml -Dgpg.homedir=..
     mvn install -Pci -B --settings ../settings.xml
 
@@ -34,6 +39,11 @@ env:
 
 release:
   script: |-
+    sudo apt-get install postgresql-9.3
+    sudo echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf
+    sudo echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf
+    sudo service postgresql start
+    psql -c 'create database nativejson;' -U postgres
     mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q --settings ../settings.xml -Dgpg.homedir=..
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
