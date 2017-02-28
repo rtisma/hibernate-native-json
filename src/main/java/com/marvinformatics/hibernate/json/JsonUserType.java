@@ -89,7 +89,7 @@ public class JsonUserType implements UserType, DynamicParameterizedType {
     }
 
     Object convertJsonToObject(String content) {
-        if (content == null) {
+        if ((content == null) || (content.isEmpty())) {
             return null;
         }
         try {
