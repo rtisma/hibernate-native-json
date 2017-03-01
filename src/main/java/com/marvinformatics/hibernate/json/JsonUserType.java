@@ -89,6 +89,9 @@ public class JsonUserType implements UserType, DynamicParameterizedType {
     }
 
     Object convertJsonToObject(String content) {
+        if ((content == null) || (content.isEmpty())) {
+            return null;
+        }
         try {
             ObjectMapper mapper = new ObjectMapper();
             JavaType type = createJavaType(mapper);

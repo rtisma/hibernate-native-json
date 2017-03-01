@@ -57,6 +57,22 @@ public class JsonUserTypeTest {
         String json = type.convertObjectToJson(label);
         assertThat(json, is("{\"value\":\"french label\",\"lang\":\"fr\",\"order\":1}"));
     }
+    
+    @Test
+    public void testConvertJsonToObjectEmpty() throws Exception {
+        String json = "";
+
+        Label label = (Label) type.convertJsonToObject(json);
+        assertThat(label, nullValue());
+    }
+
+    @Test
+    public void testConvertJsonToObjectNull() throws Exception {
+        String json = null;
+
+        Label label = (Label) type.convertJsonToObject(json);
+        assertThat(label, nullValue());
+    }
 
     @Test
     public void testDeepCopy() throws Exception {
