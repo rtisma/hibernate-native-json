@@ -63,7 +63,6 @@ public class JsonUserTypeTest {
         String json = "";
 
         Label label = (Label) type.convertJsonToObject(json);
-
         assertThat(label, nullValue());
     }
 
@@ -72,7 +71,6 @@ public class JsonUserTypeTest {
         String json = null;
 
         Label label = (Label) type.convertJsonToObject(json);
-
         assertThat(label, nullValue());
     }
 
