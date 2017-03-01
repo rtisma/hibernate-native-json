@@ -57,7 +57,7 @@ public class JsonUserTypeTest {
         String json = type.convertObjectToJson(label);
         assertThat(json, is("{\"value\":\"french label\",\"lang\":\"fr\",\"order\":1}"));
     }
-    
+
     @Test
     public void testConvertJsonToObjectEmpty() throws Exception {
         String json = "";
