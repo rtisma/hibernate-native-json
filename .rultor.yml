@@ -31,7 +31,7 @@ merge:
     sudo sh -c 'echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf'
     sudo sh -c 'echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf'
     sudo service postgresql start
-    sleep 10
+    sleep 30
     psql -c 'create database nativejson;' -U postgres
     mvn install -Pci -B --settings ../settings.xml
 
@@ -45,7 +45,7 @@ release:
     sudo sh -c 'echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf'
     sudo sh -c 'echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf'
     sudo service postgresql start
-    sleep 10
+    sleep 30
     psql -c 'create database nativejson;' -U postgres
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
