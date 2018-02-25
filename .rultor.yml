@@ -31,8 +31,8 @@ merge:
     sudo sh -c 'echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf'
     sudo sh -c 'echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf'
     sudo service postgresql start
+    sleep 10
     psql -c 'create database nativejson;' -U postgres
-    mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q --settings ../settings.xml -Dgpg.homedir=..
     mvn install -Pci -B --settings ../settings.xml
 
 env:
@@ -45,8 +45,8 @@ release:
     sudo sh -c 'echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf'
     sudo sh -c 'echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf'
     sudo service postgresql start
+    sleep 10
     psql -c 'create database nativejson;' -U postgres
-    mvn install dependency:go-offline -Pskip-formatter -DskipTests=true -q --settings ../settings.xml -Dgpg.homedir=..
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
     mvn deploy -Pci -B -Prelease --settings ../settings.xml -Dgpg.homedir=..
