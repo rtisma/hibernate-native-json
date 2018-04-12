@@ -15,19 +15,22 @@
  */
 package com.marvinformatics.hibernate.json;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.HibernateException;
 import org.hibernate.collection.internal.PersistentSet;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.usertype.UserCollectionType;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 public class JsonSetUserType extends JsonUserType implements UserCollectionType {
+
     public JsonSetUserType() {
     }
 
@@ -39,12 +42,24 @@ public class JsonSetUserType extends JsonUserType implements UserCollectionType 
         return new PersistentSet(session);
     }
 
+    @Override
+    public PersistentCollection instantiate(SharedSessionContractImplementor sharedSessionContractImplementor,
+        CollectionPersister collectionPersister) throws HibernateException {
+        return new PersistentSet(sharedSessionContractImplementor);
+    }
+
     private PersistentSet cast(Object collection) {
         return (PersistentSet) collection;
     }
 
     public PersistentCollection wrap(SessionImplementor session, Object collection) {
         return new PersistentSet(session, (Set<?>) collection);
+    }
+
+    @Override
+    public PersistentCollection wrap(SharedSessionContractImplementor sharedSessionContractImplementor,
+        Object collection) {
+        return new PersistentSet(sharedSessionContractImplementor, (Set<?>) collection);
     }
 
     public Iterator<?> getElementsIterator(Object collection) {
@@ -65,6 +80,21 @@ public class JsonSetUserType extends JsonUserType implements UserCollectionType 
             Object owner,
             Map copyCache,
             SessionImplementor session) throws HibernateException {
+        PersistentSet originalSet = this.cast(original);
+        PersistentSet targetSet = this.cast(target);
+        targetSet.clear();
+        targetSet.addAll(originalSet);
+        return target;
+    }
+
+    @Override
+    public Object replaceElements(
+        Object original,
+        Object target,
+        CollectionPersister persister,
+        Object owner,
+        Map copyCache,
+        SharedSessionContractImplementor session) throws HibernateException {
         PersistentSet originalSet = this.cast(original);
         PersistentSet targetSet = this.cast(target);
         targetSet.clear();

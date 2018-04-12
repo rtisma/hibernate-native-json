@@ -15,43 +15,56 @@
  */
 package com.marvinformatics.hibernate.json;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.HibernateException;
 import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.persister.collection.CollectionPersister;
 import org.hibernate.usertype.UserCollectionType;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marvin H Froeder
  */
 public class JsonListUserType extends JsonUserType implements UserCollectionType {
 
+
+
     @Override
     public JavaType createJavaType(ObjectMapper mapper) {
         return mapper.getTypeFactory().constructCollectionType(List.class, returnedClass());
     }
 
-    @Override
     public PersistentCollection instantiate(SessionImplementor session, CollectionPersister persister)
             throws HibernateException {
         return new PersistentList(session);
     }
 
+    @Override
+    public PersistentCollection instantiate(SharedSessionContractImplementor sharedSessionContractImplementor,
+        CollectionPersister collectionPersister) throws HibernateException {
+      return new PersistentList(sharedSessionContractImplementor);
+    }
+
+
     private PersistentList cast(Object collection) {
         return (PersistentList) collection;
     }
 
-    @Override
     public PersistentCollection wrap(SessionImplementor session, Object collection) {
         return new PersistentList(session, (List<?>) collection);
+    }
+
+    @Override
+    public PersistentCollection wrap(SharedSessionContractImplementor sharedSessionContractImplementor,
+        Object collection) {
+      return new PersistentList(sharedSessionContractImplementor, (List<?>) collection);
     }
 
     @Override
@@ -69,9 +82,13 @@ public class JsonListUserType extends JsonUserType implements UserCollectionType
         return cast(collection).indexOf(entity);
     }
 
-    @Override
-    public Object replaceElements(Object original, Object target, CollectionPersister persister, Object owner,
-            @SuppressWarnings("rawtypes") Map copyCache, SessionImplementor session) throws HibernateException {
+    public Object replaceElements(
+        Object original,
+        Object target,
+        CollectionPersister persister,
+        Object owner,
+        @SuppressWarnings("rawtypes") Map copyCache,
+        SessionImplementor session) throws HibernateException {
 
         PersistentList originalList = cast(original);
         PersistentList targetList = cast(target);
@@ -79,6 +96,23 @@ public class JsonListUserType extends JsonUserType implements UserCollectionType
         targetList.addAll(originalList);
 
         return target;
+    }
+
+    @Override
+    public Object replaceElements(
+        Object original,
+        Object target,
+        CollectionPersister persister,
+        Object owner,
+        @SuppressWarnings("rawtypes") Map copyCache,
+        SharedSessionContractImplementor session) throws HibernateException {
+
+      PersistentList originalList = cast(original);
+      PersistentList targetList = cast(target);
+      targetList.clear();
+      targetList.addAll(originalList);
+
+      return target;
     }
 
     @Override
