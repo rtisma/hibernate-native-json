@@ -40,13 +40,7 @@ env:
 
 release:
   script: |-
-    sudo apt-get update -y
-    sudo apt-get install -y postgresql-9.3
-    sudo sh -c 'echo "host all all localhost trust" > /etc/postgresql/9.3/main/pg_hba.conf'
-    sudo sh -c 'echo "local all all trust" >> /etc/postgresql/9.3/main/pg_hba.conf'
-    sudo service postgresql start
-    sleep 30s
-    psql -c 'create database nativejson;' -U postgres
+    ./initialize_postgres.sh
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
     mvn deploy -Pci -B -Prelease --settings ../settings.xml -Dgpg.homedir=..
