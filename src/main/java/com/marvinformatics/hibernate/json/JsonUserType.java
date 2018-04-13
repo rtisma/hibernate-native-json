@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.DynamicParameterizedType;
 import org.hibernate.usertype.UserType;
@@ -68,7 +67,8 @@ public class JsonUserType implements UserType, DynamicParameterizedType {
         return true;
     }
 
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
+    @Override
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
         PGobject dataObject = new PGobject();
         dataObject.setType("json");
 
@@ -78,15 +78,8 @@ public class JsonUserType implements UserType, DynamicParameterizedType {
         st.setObject(index, dataObject);
     }
 
+    @Override
     public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
-        return nullSafeGet(rs, names, (SessionImplementor) session, owner);
-    }
-
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        nullSafeSet(st, value, index, (SessionImplementor) session);
-    }
-
-    public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor session, Object owner) throws HibernateException, SQLException {
         Object result = rs.getObject(names[0]);
         if (result instanceof PGobject)
             return convertJsonToObject(((PGobject) result).getValue());
